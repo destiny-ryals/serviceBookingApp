@@ -3,7 +3,7 @@ const database = require("./connect")
 const { ObjectId } = require("mongodb")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-require("dotenv").config({path: "./config.env"})
+require("dotenv").config({ path: "./config.env" })
 
 let userRoutes = express.Router()
 const SALT_ROUNDS = 6
@@ -68,7 +68,7 @@ userRoutes.route("/users/:id").put(async (request, response) => {
             posts: request.body.posts
         }
     }
-    let data = await db.collection("users").updateOne({_id: new ObjectId(request.params.id)}, mongoObject)
+    let data = await db.collection("users").updateOne({ _id: new ObjectId(request.params.id) }, mongoObject)
     response.json(data)
 
 })
@@ -77,7 +77,7 @@ userRoutes.route("/users/:id").put(async (request, response) => {
 
 userRoutes.route("/users/:id").delete(async (request, response) => {
     let db = database.getDb()
-    let data = await db.collection("users").deleteOne({_id: new ObjectId(request.params.id)})
+    let data = await db.collection("users").deleteOne({ _id: new ObjectId(request.params.id) })
     response.json(data)
 
 })
@@ -87,12 +87,31 @@ userRoutes.route("/users/:id").delete(async (request, response) => {
 userRoutes.route("/users/login").post(async (request, response) => {
     let db = database.getDb()
     const user = await db.collection("users").findOne({ email: request.body.email })
-    
+
     if (user) {
         let confirmation = await bcrypt.compare(request.body.password, user.password)
         if (confirmation) {
-            const token = jwt.sign(user, process.env.SECRETKEY, {expiresIn: "12h"})
-            response.json({ success: true, token})
+            let profileId = null;
+            if (user.role === "provider") {
+                const profile = await db.collection("providersProfile").findOne({ userId: new ObjectId(user._id) });
+                console.log("Matched profile:", profile);
+                if (profile) {
+
+                    profileId = profile._id
+
+                }
+
+            }
+            const payload = {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+
+            }
+
+            const token = jwt.sign(payload, process.env.SECRETKEY, { expiresIn: "12h" })
+            response.json({ success: true, token, profileId })
         } else {
             response.json({ success: false, message: "Incorrect Password" })
         }

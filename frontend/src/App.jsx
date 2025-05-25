@@ -3,6 +3,7 @@ import './App.css'
 import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import { Landing } from './pages/Landing'
 import { Home } from './pages/Home'
+import { SetUp } from './pages/SetUp'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing/>} />
           <Route path="/home" element={<Home/>} />
+          <Route path="/setup" element={<SetUp/>}/>
         </Routes>
       </Router>
     </>
