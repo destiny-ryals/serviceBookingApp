@@ -22,7 +22,7 @@ export function Login() {
         let response = await verifyUser(user)
         console.log("Login response:", response)
         if ( response.success) {
-            sessionStorage.setItem("User", response.token)
+            sessionStorage.setItem("token", response.token)
             axios.defaults.headers.common["Authorization"] = `Bearer ${response.token}`
 
             if (response.role === "provider") {

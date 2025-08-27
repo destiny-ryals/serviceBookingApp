@@ -6,7 +6,7 @@ require("dotenv").config({ path: "./config.env" })
 
 let providerRoutes = express.Router()
 
-//Verify Profile(JWT Token)
+// Verify Profile(JWT Token)
 function verifyProvider(request, response, next) {
     const authHeaders = request.headers["authorization"]
     const token = authHeaders && authHeaders.split(' ')[1]

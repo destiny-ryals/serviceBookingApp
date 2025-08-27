@@ -64,7 +64,7 @@ export async function updateProfile(profileData, token) {
 export async function verifyUser(user) {
     const response = await axios.post(`${URL}/users/login`, user)
     if (response?.data?.success) {
-        const decoded = jwt_decode.jwtDecode(response.data.token)
+        const decoded = jwtDecode(response.data.token)
         return {
             success: true,
             token: response.data.token,
@@ -74,4 +74,37 @@ export async function verifyUser(user) {
     } else {
         return
     }
+}
+// ------------------ Review Functions ------------------
+// Create Review
+export async function createReview(providerId, reviewData, token) {
+    console.log("Sending review to backend:", reviewData)
+    const response = await axios.post(`${URL}/reviews/${providerId}`, reviewData, {
+        headers: {Authorization: `Bearer ${token}`}
+    })
+    return response.data
+}
+
+// Get All Reviews for Provider
+export async function getProviderReviews(providerId) {
+    const response = await axios.get(`${URL}/reviews/${providerId}`)
+    return response.data;
+}
+
+// Delete Review
+/*export async function deleteReview(reviewId) {
+    const response = await axios.delete(`${URL}/reviews/${reviewId}`)
+    return response
+}*/
+
+// Update Review
+/*export async function updateReview(reviewId, data) {
+    const response = await axios.put(`${URL}/reviews/${reviewId}`, data);
+    return response;
+}*/
+
+// Get Average Rating for Provider
+export async function getAverageRating(providerId) {
+    const response = await axios.get(`${URL}/reviews/${providerId}/average`)
+    return response.data
 }

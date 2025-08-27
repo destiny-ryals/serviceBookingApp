@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import {
   Card,
   CardContent,
@@ -8,7 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 
+
 export function ProviderCard({ providersProfile }) {
+ const userId = sessionStorage.getItem("userId");
+
   return (
     <Card>
       <Link to={`/providers/${providersProfile._id}`} style={{ textDecoration: "none", color: "inherit" }}>

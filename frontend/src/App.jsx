@@ -4,6 +4,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import { Landing } from './pages/Landing'
 import { Home } from './pages/Home'
 import { SetUp } from './pages/SetUp'
+import ProviderPage from "./pages/ProviderPage"
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Landing/>} />
           <Route path="/home" element={<Home/>} />
           <Route path="/setup" element={<SetUp/>}/>
+          <Route path="/providers/:id" element={<ProviderPage/>} />
         </Routes>
       </Router>
     </>
